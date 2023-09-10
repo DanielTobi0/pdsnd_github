@@ -48,7 +48,7 @@ def get_filters():
     days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all']
     day = get_valid_input('\nLastly... What day of the week?\n\n', days)
 
-    print('-' * 40)
+    print('-' * 40) 
     return city, month, day
 
 
