@@ -24,7 +24,7 @@ def get_filters():
 
         if city not in ('chicago', 'new york city', 'washington'):
             print('invalid, try again!\n\n')
-            continue
+            continue 
         else:
             break
 
