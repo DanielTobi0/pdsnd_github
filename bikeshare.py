@@ -199,7 +199,7 @@ def show_data(df):
         if data == 'yes' or 'y':
             print(df[i:i + 5])
 
-            # increase index by 5
+            # increase index by 5.
             i = i + 5
 
         else:
