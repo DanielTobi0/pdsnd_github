@@ -14,7 +14,7 @@ Over the past decade, bicycle-sharing systems have been growing in number and po
 - bikeshare.py
 - .csv files
 
-### Credits
+### Credits 
 - Udacity Introduction to Python programming course videos and notes
 - Udacity project description and Rubric
 - [Python User Input from Keyboard](https://www.askpython.com/python/examples/python-user-input#:~:text=Python%20User%20Input%20from%20Keyboard%20%E2%80%93%20input%20%28%29,for%20the%20user%20input.%20...) - A guide on how to take user input in Python.
