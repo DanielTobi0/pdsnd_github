@@ -6,6 +6,25 @@ CITY_DATA = {'chicago': 'chicago.csv',
              'washington': 'washington.csv'}
 
 
+def get_valid_input(prompt, valid_options):
+    """
+    Helper function to get valid input from the user.
+
+    Args:
+        prompt (str): The input prompt for the user.
+        valid_options (list): List of valid options.
+
+    Returns:
+        str: User's input (lowercased and stripped).
+    """
+    while True:
+        user_input = input(prompt).strip().lower()
+        if user_input in valid_options:
+            return user_input
+        else:
+            print('Invalid input, please try again.')
+
+
 def get_filters():
     """
     Asks user to specify a city, month, and day to analyze.
@@ -17,37 +36,17 @@ def get_filters():
     """
     print('Hello! Let\'s explore some US bikeshare data!')
 
-    while True:
-        input_city = input('Let"s begin by choosing a city! Which city would you like to explore: Chicago, New York '
-                           'City, or Washington?\n\n')
-        city = input_city.lower()
+    cities = list(CITY_DATA.keys())
+    city = get_valid_input('Let\'s begin by choosing a city! Which city would you like to explore: '
+                           'Chicago, New York City, or Washington?\n\n', cities)
 
-        if city not in ('chicago', 'new york city', 'washington'):
-            print('invalid, try again!\n\n')
-            continue
-        else:
-            break
+    months = ['january', 'february', 'march', 'april', 'may', 'june', 'all']
+    month = get_valid_input(f'\nWhich month are you interested in analyzing for in {city.title()}? '
+                            f'You have the option to select from January, February, March, April, May, June and All.\n\n',
+                            months)
 
-    while True:
-        input_month = input(f'\nWhich month are you interested in analyzing for in {city.title()}? You have the '
-                            f'option to select from January, February, March, April, May, June and All.\n\n')
-        month = input_month.lower()
-
-        if month not in ('january', 'february', 'march', 'april', 'may', 'june', 'all'):
-            print('invalid, try again!')
-            continue
-        else:
-            break
-
-    while True:
-        input_day_of_week = input('\nLastly...What day of the week?\n\n')
-        day = input_day_of_week.lower()
-
-        if day not in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all'):
-            print('invalid, try again!')
-            continue
-        else:
-            break
+    days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all']
+    day = get_valid_input('\nLastly... What day of the week?\n\n', days)
 
     print('-' * 40)
     return city, month, day
@@ -61,6 +60,7 @@ def load_data(city, month, day):
         (str) city - name of the city to analyze
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
+
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
@@ -72,14 +72,10 @@ def load_data(city, month, day):
     df['Week_Day'] = df['Start Time'].dt.weekday
 
     if month != 'all':
-        months = ['january', 'february', 'march', 'april', 'may', 'june']
-        month = months.index(month) + 1
-        df = df[df['Month'] == month]
+        df = df[df['Month'] == month.index(month) + 1]
 
     if day != 'all':
-        days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-        day = days.index(day)
-        df = df[df['Week_Day'] == day]
+        df = df[df['Week_Day'] == day.index(day)]
 
     return df
 
@@ -102,8 +98,7 @@ def time_stats(df, city):
         print(f'Most day of the week to start a trip: {mode_day_of_week}')
 
         # Display the most common start hour
-        hour = df['Start Time'].dt.hour
-        mode_start_hour = hour.mode()[0]
+        mode_start_hour = df['Start Time'].dt.hour.mode()[0]
         print(f'Most common hour to start a trip: {mode_start_hour}')
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -196,12 +191,11 @@ def show_data(df):
 
     while True:
         data = input("\nDo you want to view 5 lines of raw data? Please enter 'yes' or 'no'?\n\n")
-        if data == 'yes' or 'y':
+        if data.lower() == 'yes' or data.lower() == 'y':
             print(df[i:i + 5])
 
             # increase index by 5
             i = i + 5
-
         else:
             break
 
@@ -219,7 +213,7 @@ def main():
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
 
-        if restart.lower() != 'yes':
+        if restart.lower() != 'yes' or 'y':
             break
         print('\n\n')
 
